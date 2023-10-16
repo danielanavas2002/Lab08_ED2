@@ -6,7 +6,7 @@
 //********************************************************************************
 // Variables Globales
 //********************************************************************************
-#define CS_PIN 5
+#define CS_PIN PA_3
 int opcion;
 char c;
 int lineCount;
@@ -20,15 +20,8 @@ File myFile;
 void setup(){
   // Open serial communications and wait for port to open:
   Serial.begin(115200);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
+  SPI.setModule(0); //Indicar que el módulo SPI se utilizará
   Serial.print("Initializing SD card...");
-  // On the Ethernet Shield, CS is pin 4. It's set as an output by default.
-  // Note that even if it's not used as the CS pin, the hardware SS pin
-  // (10 on most Arduino boards, 53 on the Mega) must be left as an output
-  // or the SD library functions will not work.
-  pinMode(10, OUTPUT);
 
   if (!SD.begin(CS_PIN)) {
     Serial.println("initialization failed!");
@@ -124,7 +117,7 @@ void loop() {
   }
   if(opcion == 4){
     Serial.println("Escriba las 10 lineas de la nueva imagen: ");
-    while (lineCount < 10) {
+    while (lineCount < 11) {
     while (!Serial.available()) {
       // Espera a que haya datos disponibles en el monitor serial
     }
@@ -142,10 +135,12 @@ void loop() {
     }
   // Incrementar el contador de líneas
     Serial.print("Linea ");
-    Serial.print(lineCount + 1);
+    Serial.print(lineCount);
     Serial.println(" Recibida");
     lineCount++;
     }  
+    Serial.println(" ");
+    Serial.println("IMAGEN COMPLETADA");
     Serial.println(" ");
     Serial.println("Selecciona una imagen:");
     Serial.println("1. Corazon");
